@@ -6,8 +6,8 @@ Welcome to **FileDrive**, a full-stack demo project that replicates cloud file s
 
 ## ✨ Demo
 
-- 🔗 **Live App**: [https://filedrive-demo.vercel.app](https://filedrive-demo.vercel.app)
-- 👤 **LinkedIn**: [https://www.linkedin.com/in/YOUR_USERNAME](https://www.linkedin.com/in/YOUR_USERNAME)
+- 🔗 **Live App**: [https://armstrong-file-drive.vercel.app/](https://armstrong-file-drive.vercel.app/)
+- 👤 **LinkedIn**: [https://www.linkedin.com/in/ndukwearmstrong/](https://www.linkedin.com/in/ndukwearmstrong/)
 
 ---
 

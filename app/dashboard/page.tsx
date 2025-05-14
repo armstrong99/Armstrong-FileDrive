@@ -80,9 +80,8 @@ export default function Dashboard() {
 
     const data = (await res.json()) as Array<FileNode | FolderNode>;
 
-    console.log(data, " from API");
-
     setUserResources(data);
+    pathMap.set(paths[0], data);
   };
   useEffect(() => {
     // initialize root
