@@ -3,6 +3,17 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/app/lib/prismadb";
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email?: string | null;
+      name?: string | null;
+      image?: string | null;
+    };
+  }
+}
+
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -39,7 +50,7 @@ export const nextAuthOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       session.user!.id = token.id as string;
       session.user!.email = token.email as string;
       return session;

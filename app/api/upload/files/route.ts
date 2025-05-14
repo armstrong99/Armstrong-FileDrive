@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import prisma from "@/app/lib/prismadb";
 import { getServerSession } from "next-auth";
-import { nextAuthOptions } from "../../auth/[...nextauth]/route";
+import { nextAuthOptions } from "@/app/lib/auth";
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
@@ -15,7 +15,7 @@ const s3Client = new S3Client({
 export async function POST(request: NextRequest) {
   // 1. Authenticate
   const session = await getServerSession(nextAuthOptions);
-  if (!session?.user?.id) {
+  if (!(session as any)?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
   // 3. Lookup user
   const foundUser = await prisma.user.findUnique({
-    where: { email: session.user.email! },
+    where: { email: (session as any).user.email! },
   });
   if (!foundUser) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });

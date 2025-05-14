@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import prisma from "@/app/lib/prismadb";
 import { getServerSession } from "next-auth";
-import { nextAuthOptions } from "../../auth/[...nextauth]/route";
 import { FolderNode } from "@/app/lib/folderTreeAlgo";
 import { InputJsonObject } from "@prisma/client/runtime/library";
+import { nextAuthOptions } from "@/app/lib/auth";
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
