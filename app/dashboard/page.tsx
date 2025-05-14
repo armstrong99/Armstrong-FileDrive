@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   FaFolder,
   FaChevronRight,
@@ -36,7 +36,6 @@ interface IStagingBlob {
 const MAX_FILE_SIZE = 250 * 1024 * 1024; // 250MB in bytes
 
 export default function Dashboard() {
-  const notify = (message: string) => toast(message);
   const [userResources, setUserResources] = useState<
     Array<FileNode | FolderNode>
   >([]);
@@ -134,10 +133,10 @@ export default function Dashboard() {
       buildFolderTree(files);
     console.log(uploadedNode);
     // max limit: 250MB
-    if (uploadedNode![0]?.totalSize! > MAX_FILE_SIZE) {
-      alert("Sorry Folder Size is too large (above 250mb)");
-    }
     if (uploadedNode) {
+      if (uploadedNode[0].totalSize > MAX_FILE_SIZE) {
+        alert("Sorry Folder Size is too large (above 250mb)");
+      }
       setfileStaging((prev) => ({
         ...prev,
         totalNum: 1,
@@ -193,7 +192,7 @@ export default function Dashboard() {
 
         formData.append("fileNodes", JSON.stringify(stageFiles));
 
-        let response = await fetch("/api/upload/files", {
+        const response = await fetch("/api/upload/files", {
           method: "POST",
           body: formData,
         });
@@ -233,7 +232,7 @@ export default function Dashboard() {
           formData.append("files", file);
         });
 
-        let response = await fetch("/api/upload/folder", {
+        const response = await fetch("/api/upload/folder", {
           method: "POST",
           body: formData,
         });

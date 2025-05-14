@@ -81,7 +81,7 @@ export function ResourceContainer({
     <div className="space-y-6">
       {/* Grid of cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentPageResources.map((resource, idx) => {
+        {currentPageResources.map((resource) => {
           if (resource.type === "file") {
             return (
               <RenderFile key={resource.name} dto={resource as FileNode} />

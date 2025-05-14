@@ -4,7 +4,7 @@ import prisma from "@/app/lib/prismadb";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "../../auth/[...nextauth]/route";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const session = await getServerSession(nextAuthOptions);
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
