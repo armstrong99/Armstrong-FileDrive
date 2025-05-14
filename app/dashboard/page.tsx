@@ -2,9 +2,7 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import {
   FaFolder,
-  FaFile,
   FaChevronRight,
-  FaChevronLeft,
   FaUpload,
   FaCheckCircle,
   FaExclamationCircle,
@@ -15,10 +13,11 @@ import {
   buildFolderTree,
   FileNode,
   FolderNode,
-  mockData,
 } from "../lib/folderTreeAlgo";
 import { ResourceContainer } from "../components/renderResources";
 import { ToastContainer, toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const pathMap: Map<string, Array<FileNode | FolderNode>> = new Map();
 
@@ -38,8 +37,9 @@ const MAX_FILE_SIZE = 250 * 1024 * 1024; // 250MB in bytes
 
 export default function Dashboard() {
   const notify = (message: string) => toast(message);
-  const [userResources, setUserResources] =
-    useState<Array<FileNode | FolderNode>>(mockData);
+  const [userResources, setUserResources] = useState<
+    Array<FileNode | FolderNode>
+  >([]);
   const [paths, setPaths] = useState<string[]>(["Home"]);
   const [fileStaging, setfileStaging] = useState<IStagingBlob>({
     totalNum: 0,
@@ -88,7 +88,7 @@ export default function Dashboard() {
   useEffect(() => {
     // initialize root
 
-    pathMap.set("Home", mockData);
+    pathMap.set("Home", []);
     fetchUserResources();
     return () => {
       pathMap.clear();
@@ -263,6 +263,23 @@ export default function Dashboard() {
       }
     }
   };
+
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/signin");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
 
   return (
     <section className="container mx-auto p-6">
