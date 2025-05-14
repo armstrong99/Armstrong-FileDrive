@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌐 FileDrive – Cloud File Manager (DEMO PROJECT)
 
-## Getting Started
+Welcome to **FileDrive**, a full-stack demo project that replicates cloud file storage features (like Google Drive or Dropbox). It includes folder hierarchy management, secure file uploads, and seamless integration with AWS S3 – all powered by **Next.js 14 App Router**, **TypeScript**, **Prisma**, **NextAuth**, and **React**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🔗 **Live App**: [https://filedrive-demo.vercel.app](https://filedrive-demo.vercel.app)
+- 👤 **LinkedIn**: [https://www.linkedin.com/in/YOUR_USERNAME](https://www.linkedin.com/in/YOUR_USERNAME)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Features
 
-## Learn More
+### ✅ 1. PERFORMANCE-FOCUSED UI
 
-To learn more about Next.js, take a look at the following resources:
+- Utilized `React.memo`, `useCallback`, and `useMemo` to **minimize re-renders** and optimize render cycles.
+- Leveraged **path-based caching** using `Map<string, FolderNode[]>` to avoid repeated tree reconstruction.
+- Optimized **staging + upload flow** to prevent unnecessary DOM updates.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### ✅ 2. AUTHENTICATION VIA NEXTAUTH.JS + GOOGLE SSO
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Integrated `next-auth` with **Google SSO** for smooth and secure authentication.
+- Ensured protected routes (like the dashboard) redirect unauthenticated users automatically.
 
-## Deploy on Vercel
+### ✅ 3. AWS S3 INTEGRATION
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Created an **IAM user** on AWS with minimal permissions to access an **S3 bucket**.
+- Upload functionality supports:
+  - **Individual files**.
+  - **Whole folders**, preserving internal structure.
+- Files are uploaded to `uploads/{userId}/{relativePath}` with metadata stored in a No-SQL DB (Mongodb Atlas).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### ✅ 4. ADVANCED TREE BUILDING ALGORITHM
+
+- Implemented a recursive algorithm to parse uploaded folders/files into a **nested folder tree**.
+- Maps relative paths to structured `FolderNode` and `FileNode` objects with size aggregation and hierarchy logic.
+- This enables an intuitive and scalable representation of complex folder structures.
+
+### ✅ 5. REAL-TIME UI SYNC WITH PRISMA + DATABASE
+
+- Used **Prisma ORM** for modeling Users and Files in a Postgres database.
+- Every upload is:
+  - Persisted in S3.
+  - Logged with metadata in the database.
+  - Synced immediately in the UI using local state and path mapping logic.
+
+---
+
+## 🛠️ How to Run Locally
+
+> **Requirements:** Node.js 18+, MongoDB Atlas, AWS Account
+
+1. **Clone this repo**
+
+   ```bash
+   git clone <repo-url>
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+Add values for:
+
+Google OAuth credentials `(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)`
+
+`AWS S3 (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET_NAME, AWS_REGION)`
+
+`NextAuth secrets and database URL`
+
+4. **Set up Prisma**
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Run the dev server**
+
+   ```bash
+   npm run dev
+   ```
+
+6. **Should be running now on:**
+
+   ```bash
+   Open: http://localhost:3000
+   ```
+
+## 📚 Tech Stack
+
+- **Frontend**: React 19, Next.js 15 App Router, TailwindCSS, Toastify
+
+- **Backend**: Next.js API Routes, NextAuth.js, Prisma
+
+- **Storage**: AWS S3
+
+- **Database**: Mongodb (via Prisma)
+
+- **Authentication**: Google SSO (OAuth 2.0)
