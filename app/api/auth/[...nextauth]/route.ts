@@ -1,4 +1,5 @@
 // app/api/auth/[...nextauth]/route.ts
+export const runtime = "nodejs";
 import NextAuth from "next-auth";
 import { nextAuthOptions } from "@/app/lib/auth";
 

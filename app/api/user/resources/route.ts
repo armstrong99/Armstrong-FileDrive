@@ -1,5 +1,6 @@
 // app/api/users/[id]/resources/route.ts
-import { NextRequest, NextResponse } from "next/server";
+export const runtime = "nodejs";
+import { NextResponse } from "next/server";
 import prisma from "@/app/lib/prismadb";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/app/lib/auth";

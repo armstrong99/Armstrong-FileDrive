@@ -1,21 +1,17 @@
 // app/auth/error/page.tsx
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { FaExclamationTriangle, FaHome, FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 
 export default function AuthErrorPage() {
-  const searchParams = useSearchParams();
-  const rawError = searchParams.get("error");
-
-  // Decode the URI component and clean up the string
-  const decodedError = rawError
-    ? decodeURIComponent(rawError)
-        .replace(/%20/g, " ") // Convert %20 to spaces
-        .replace(/%22/g, '"') // Convert %22 to quotes
-        .replace(/%0A/g, "\n") // Convert %0A to newlines
-    : "Unknown error occurred";
+  // // Decode the URI component and clean up the string
+  // const decodedError = rawError
+  //   ? decodeURIComponent(rawError)
+  //       .replace(/%20/g, " ") // Convert %20 to spaces
+  //       .replace(/%22/g, '"') // Convert %22 to quotes
+  //       .replace(/%0A/g, "\n") // Convert %0A to newlines
+  //   : "Unknown error occurred";
 
   // User-friendly error messages mapping
   const errorMessages: Record<string, string> = {
@@ -27,14 +23,14 @@ export default function AuthErrorPage() {
     Default: "Something went wrong during authentication.",
   };
 
-  // Find the most relevant error message
-  let userMessage = errorMessages.Default;
-  for (const [key, value] of Object.entries(errorMessages)) {
-    if (decodedError.includes(key)) {
-      userMessage = value;
-      break;
-    }
-  }
+  // // Find the most relevant error message
+  // let userMessage = errorMessages.Default;
+  // for (const [key, value] of Object.entries(errorMessages)) {
+  //   if (decodedError.includes(key)) {
+  //     userMessage = value;
+  //     break;
+  //   }
+  // }
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center p-4">
@@ -50,7 +46,7 @@ export default function AuthErrorPage() {
           {/* User-friendly message */}
           <div className="alert alert-error mt-4">
             <div>
-              <span>{userMessage}</span>
+              <span>{"userMessage"}</span>
             </div>
           </div>
 
@@ -61,7 +57,7 @@ export default function AuthErrorPage() {
             </summary>
             <div className="collapse-content">
               <pre className="whitespace-pre-wrap text-xs p-2 bg-neutral rounded">
-                {decodedError}
+                {"decodedError"}
               </pre>
             </div>
           </details>
