@@ -7,6 +7,7 @@ import {
   FaCheckCircle,
   FaExclamationCircle,
   FaArrowUp,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import {
   buildFileTree,
@@ -16,7 +17,7 @@ import {
 } from "../lib/folderTreeAlgo";
 import { ResourceContainer } from "../components/renderResources";
 import { ToastContainer, toast } from "react-toastify";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const pathMap: Map<string, Array<FileNode | FolderNode>> = new Map();
@@ -36,6 +37,7 @@ interface IStagingBlob {
 const MAX_FILE_SIZE = 250 * 1024 * 1024; // 250MB in bytes
 
 export default function Dashboard() {
+  const { data: session, status } = useSession();
   const [userResources, setUserResources] = useState<
     Array<FileNode | FolderNode>
   >([]);
@@ -260,7 +262,6 @@ export default function Dashboard() {
     }
   };
 
-  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -280,6 +281,22 @@ export default function Dashboard() {
   return (
     <section className="container mx-auto p-6">
       <ToastContainer />
+      <header className="flex justify-end items-center mb-6 space-x-4">
+        {session?.user?.image && (
+          <img
+            src={session.user.image}
+            alt="Your avatar"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        )}
+        <button
+          onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+          className="btn btn-ghost btn-sm flex items-center gap-2"
+        >
+          <FaSignOutAlt />
+          Sign Out
+        </button>
+      </header>
       {/* panel file/folder upload */}
       <section className="card bg-base-100 shadow-lg p-6 rounded-box mb-6">
         {/* Hidden file inputs */}
