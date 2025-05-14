@@ -266,7 +266,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/auth/signin");
+      router.push("/auth/");
     }
   }, [status, router]);
 
@@ -290,7 +290,7 @@ export default function Dashboard() {
           />
         )}
         <button
-          onClick={() => signOut({ callbackUrl: "/auth/signin" })}
+          onClick={() => signOut({ callbackUrl: "/auth/" })}
           className="btn btn-ghost btn-sm flex items-center gap-2"
         >
           <FaSignOutAlt />
