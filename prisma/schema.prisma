@@ -1,0 +1,43 @@
+// schema.prisma
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL") // mongodb://localhost:27017/drive-clone
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id       String   @id @default(auto()) @map("_id") @db.ObjectId
+    email    String   @unique
+    password String
+    fullName String
+    imageUrl String?
+    files    File[]
+    folders  Folder[]
+}
+
+model Folder {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    name         String
+    children     Json?    @default("{}") // DEMO PROJECT: -> we are sacrifising type-safety becuase PRISMA doesnt support nested types as mongodb do, absolutely fine for a demo project
+    owner        User     @relation(fields: [ownerId], references: [id])
+    ownerId      String   @db.ObjectId
+    createdAt    DateTime @default(now())
+    relativePath String
+    totalSize    Int
+    type         String
+}
+
+model File {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    name         String
+    type         String
+    relativePath String
+    fileSize     Int
+    file         String?
+    owner        User     @relation(fields: [ownerId], references: [id])
+    ownerId      String   @db.ObjectId
+    createdAt    DateTime @default(now())
+}
