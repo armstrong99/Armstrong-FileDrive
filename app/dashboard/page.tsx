@@ -86,8 +86,6 @@ export default function Dashboard() {
   };
   useEffect(() => {
     // initialize root
-
-    pathMap.set("Home", []);
     fetchUserResources();
     return () => {
       pathMap.clear();
